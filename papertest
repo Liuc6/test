@@ -38,7 +38,7 @@ class testpaper():
             ws = self.wb[sheetname]
             return ws['G' + str(num + 1)].value
 
-def createpaper(sheetname,count):
+def createpaper(sheetname):
     history = testpaper()
     maxnum = history.getnum(sheetname)
     chicenum = range(1,maxnum)
@@ -65,4 +65,4 @@ def createpaper(sheetname,count):
 
     paperFile.close()
 
-createpaper('选择题',10)
+createpaper('选择题')
