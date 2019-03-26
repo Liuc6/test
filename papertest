@@ -41,11 +41,11 @@ class testpaper():
 def createpaper(sheetname):
     history = testpaper()
     maxnum = history.getnum(sheetname)
-    chicenum = range(1,maxnum)
+    choicenum = range(1,maxnum)
     paperFile = open('papertest.txt', 'w')
     paperFile.write('question bank'+'\n\n')
     i = 0
-    for num in chicenum :
+    for num in choicenum :
         question = history.getquestion(sheetname,num)
         questionitem = history.getpaperitem(sheetname,num)
         answer = history.getanswer(sheetname,num)
