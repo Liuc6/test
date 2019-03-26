@@ -38,16 +38,14 @@ class testpaper():
             ws = self.wb[sheetname]
             return ws['G' + str(num + 1)].value
 
-def createpaper(sheetname,count):
+def createpaper(sheetname):
     history = testpaper()
     maxnum = history.getnum(sheetname)
-    chicenum = random.sample(range(1,maxnum),count)
-    paperFile = open('paper.txt', 'w')
-    paperFile.write('Name:\n\nDate:\n\n')
-
-    answerFile = open('answer.txt','w')
-    answerFile.write('answer\n')
-    for num in chicenum :
+    choicenum = range(1,maxnum)
+    paperFile = open('papertest.txt', 'w')
+    paperFile.write('question bank'+'\n\n')
+    i = 0
+    for num in choicenum :
         question = history.getquestion(sheetname,num)
         questionitem = history.getpaperitem(sheetname,num)
         answer = history.getanswer(sheetname,num)
@@ -61,12 +59,10 @@ def createpaper(sheetname,count):
         paperFile.write('\n')
         paperFile.write('D、'+questionitem[3])
         paperFile.write('\n')
+        paperFile.write('正确答案：'+answer+'\n\n')
+        i+=1
+    paperFile.write('共'+str(i)+'题')
 
-        answerFile.write('\n')
-        answerFile.write(answer)
-
-    paperFile.write('共'+count+'题')
     paperFile.close()
-    answerFile.close()
 
-createpaper('选择题',10)
+createpaper('选择题')
