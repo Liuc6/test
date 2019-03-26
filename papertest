@@ -1,0 +1,68 @@
+import random
+import openpyxl
+
+class testpaper():
+    '''
+    get testpaper
+    include chioce question,short answer,essay questions
+    :return:
+    '''
+    wb = openpyxl.load_workbook('真题近现代.xlsx')
+    def getnum(self,sheetname):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws.max_row
+    def getquestion(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws['B' + str(num + 1)].value
+    def getpaperitem(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            paperitem = []
+            paperitem.append(ws['C' + str(num + 1)].value)
+            paperitem.append(ws['D' + str(num + 1)].value)
+            paperitem.append(ws['E' + str(num + 1)].value)
+            paperitem.append(ws['F' + str(num + 1)].value)
+            return paperitem
+    def getanswer(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws['G' + str(num + 1)].value
+
+def createpaper(sheetname,count):
+    history = testpaper()
+    maxnum = history.getnum(sheetname)
+    chicenum = range(1,maxnum)
+    paperFile = open('papertest.txt', 'w')
+    paperFile.write('question bank'+'\n\n')
+    i = 0
+    for num in chicenum :
+        question = history.getquestion(sheetname,num)
+        questionitem = history.getpaperitem(sheetname,num)
+        answer = history.getanswer(sheetname,num)
+        paperFile.write('题目：' + question)
+        paperFile.write('\n')
+        paperFile.write('A、'+questionitem[0])
+        paperFile.write('\n')
+        paperFile.write('B、'+questionitem[1])
+        paperFile.write('\n')
+        paperFile.write('C、'+questionitem[2])
+        paperFile.write('\n')
+        paperFile.write('D、'+questionitem[3])
+        paperFile.write('\n')
+        paperFile.write('正确答案：'+answer+'\n\n')
+        i+=1
+    paperFile.write('共'+str(i)+'题')
+
+    paperFile.close()
+
+createpaper('选择题',10)
