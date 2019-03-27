@@ -1,0 +1,16 @@
+import wx
+class MyInFrame(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, None, -1, 'lc', size=(500, 500))
+        panel = wx.Panel(self)
+        self.wktext = wx.StaticText(panel,-1,u'WK系统',pos = (30,30),size = (50,30))
+        self.locationtext = wx.TextCtrl(panel,-1,pos = (150,20),size = (200,20),style=wx.TE_MULTILINE)
+        self.combox = wx.ComboBox(panel,-1,pos = (150,50),size = (200,20))
+        self.button = wx.Button(panel,-1,u'开始',pos = (200,300),size = (50,30))
+
+
+
+app = wx.App()
+frame = MyInFrame()
+frame.Show()
+app.MainLoop()
