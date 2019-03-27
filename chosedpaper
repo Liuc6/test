@@ -1,0 +1,93 @@
+import random
+import openpyxl
+
+class testpaper():
+    '''
+    get testpaper
+    include chioce question,short answer,essay questions
+    :return:
+    '''
+    wb = openpyxl.load_workbook('真题近现代.xlsx')
+    def getnum(self,sheetname):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws.max_row
+    def getquestion(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws['B' + str(num + 1)].value
+    def getpaperitem(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            paperitem = []
+            paperitem.append(ws['C' + str(num + 1)].value)
+            paperitem.append(ws['D' + str(num + 1)].value)
+            paperitem.append(ws['E' + str(num + 1)].value)
+            paperitem.append(ws['F' + str(num + 1)].value)
+            return paperitem
+    def getanswer(self,sheetname,num):
+        if sheetname not in self.wb.sheetnames:
+            print('Wrong sheetname')
+        else:
+            ws = self.wb[sheetname]
+            return ws['G' + str(num + 1)].value
+
+def papertype(sheetname):
+    history = testpaper()
+    maxnum = history.getnum(sheetname)
+    chicenum = random.sample(range(1,maxnum),25)#写死25个选择题
+    paperFile = open('paper.txt', 'w')
+    paperFile.write('Name:\n\nDate:\n\n')
+
+    answerFile = open('answer.txt','w')
+    answerFile.write('answer\n')
+    for num in chicenum :
+        question = history.getquestion(sheetname,num)
+        questionitem = history.getpaperitem(sheetname,num)
+        answer = history.getanswer(sheetname,num)
+        userchosen = 'a'
+        if userchosen == answer:
+            continue
+        else:
+            print(answer)
+
+def extype():
+    pass
+def createpaper(sheetname,count):
+    history = testpaper()
+    maxnum = history.getnum(sheetname)
+    chicenum = random.sample(range(1,maxnum),count)
+    paperFile = open('paper.txt', 'w')
+    paperFile.write('Name:\n\nDate:\n\n')
+
+    answerFile = open('answer.txt','w')
+    answerFile.write('answer\n')
+    for num in chicenum :
+        question = history.getquestion(sheetname,num)
+        questionitem = history.getpaperitem(sheetname,num)
+        answer = history.getanswer(sheetname,num)
+        paperFile.write('题目：' + question)
+        paperFile.write('\n')
+        paperFile.write('A、'+str(questionitem[0]))
+        paperFile.write('\n')
+        paperFile.write('B、'+str(questionitem[1]))
+        paperFile.write('\n')
+        paperFile.write('C、'+str(questionitem[2]))
+        paperFile.write('\n')
+        paperFile.write('D、'+str(questionitem[3]))
+        paperFile.write('\n')
+
+        answerFile.write('\n')
+        answerFile.write(answer)
+
+    paperFile.write('共'+str(count)+'题')
+    paperFile.close()
+    answerFile.close()
+
+createpaper('选择题',10)
