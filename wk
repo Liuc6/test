@@ -31,9 +31,7 @@ class MyInFrame(wx.Frame):
         self.tmtext = wx.StaticText(self.panel,-1,u'题目：',pos = (100,150),size = (30,30),style = wx.ALIGN_CENTER_HORIZONTAL)
         self.tmtext.SetFont(self.titlefont)
 
-        #问题
-        self.questiontext = wx.StaticText(self.panel,-1,pos = (150,150),size =(100,40),\
-                                          style = wx.TE_MULTILINE)
+
 
         #选项
         #self.answerbox = wx.ListBox(self.panel,-1,pos = (180,200),size = (200,160),style = wx.TE_MULTILINE)
@@ -55,20 +53,24 @@ class MyInFrame(wx.Frame):
 
 
     def button_do(self,event):
+        intext = chosenpaper.getpaper('选择题',2)
+        question = intext[0]
+        answer = intext[1]
         self.button.SetLabel('下一题')
-        paper = chosenpaper.testpaper()
-        maxnum = paper.getnum('选择题')
-        chicenum = random.sample(range(1, maxnum), 25)
-        for num in chicenum:
-            question = paper.getquestion('选择题',num)
-            answer = paper.getpaperitem('选择题',num)
-            realanswer = paper.getanswer('选择题',num)
-            self.questiontext.SetLabel(question)
-            print(answer)
-            self.rabox = wx.RadioBox(self.panel, -1, u'选项', choices=answer, majorDimension=4, pos=(180, 200), \
+        for qtn in question.keys():
+            # 问题
+            self.questiontext = wx.StaticText(self.panel, -1,qtn, pos=(150, 150), size=(300, 40), \
+                                              style=wx.TE_MULTILINE)
+            self.rabox = wx.RadioBox(self.panel, -1, u'选项', choices=question[qtn], pos=(180, 200), \
                                      size=(200, 40), style=wx.RA_SPECIFY_ROWS)
-            self.rabox.Refresh()
-            break
+            self.rabox.SetSelection(wx.NOT_FOUND)
+
+
+            if self.rabox.GetStringSelection() == answer[qtn]:
+                break
+
+
+
 
 
     def choice_user(self,event):
