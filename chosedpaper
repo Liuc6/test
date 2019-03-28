@@ -62,6 +62,21 @@ def papertype(sheetname):
 def extype():
     pass
 '''
+def getpaper(sheetname,count):
+    history = testpaper()
+    maxnum = history.getnum(sheetname)
+    chicenum = random.sample(range(1,maxnum),count)
+    qdict = {}
+    adict = {}
+    for num in chicenum:
+        question = history.getquestion(sheetname,num)
+        questionitem = history.getpaperitem(sheetname,num)
+        answer = history.getanswer(sheetname,num)
+        qdict[question]=questionitem
+        adict[question] = answer
+    return qdict,adict
+h = getpaper('选择题',2)
+print(h[0])
 def createpaper(sheetname,count):
     history = testpaper()
     maxnum = history.getnum(sheetname)
@@ -93,4 +108,4 @@ def createpaper(sheetname,count):
     paperFile.close()
     answerFile.close()
 
-createpaper('选择题',10)
+#createpaper('选择题',10)
