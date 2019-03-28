@@ -1,14 +1,80 @@
 import wx
+import chosenpaper
+import random
+import time
 class MyInFrame(wx.Frame):
     def __init__(self):
+        '''
+        #exercise type
+        #self.combox = wx.ComboBox(self.panel,-1,pos = (150,50),size = (200,20))
+        #进度条
+        #self.gauge= wx.Gauge(self.panel,-1,100,pos = (150,50),size = (200,20))
+        #self.listbox = wx.ListBox(self.panel,10,choices = [] ,pos = (150,130),size = (100,100))
+        '''
         wx.Frame.__init__(self, None, -1, 'lc', size=(500, 500))
-        panel = wx.Panel(self)
-        self.wktext = wx.StaticText(panel,-1,u'WK系统',pos = (30,30),size = (50,30))
-        self.locationtext = wx.TextCtrl(panel,-1,pos = (150,20),size = (200,20),style=wx.TE_MULTILINE)
-        self.combox = wx.ComboBox(panel,-1,pos = (150,50),size = (200,20))
-        self.button = wx.Button(panel,-1,u'开始',pos = (200,300),size = (50,30))
+        self.panel = wx.Panel(self,-1)
+        #system name
+        self.font = wx.Font(18, wx.ROMAN, wx.ITALIC, wx.NORMAL)
+        self.wktext = wx.StaticText(self.panel,-1,u'WK系统',pos = (30,40),size = (80,80),style = wx.ALIGN_CENTER)
+        self.wktext.SetFont(self.font)
+
+        #excel path
+        self.locationtext = wx.TextCtrl(self.panel,-1,pos = (180,20),size = (200,25),style=wx.TE_MULTILINE)
+
+        #choice
+        self.choice = wx.Choice(self.panel,-1,choices = ['考试模式','刷题模式'],pos = (180,60),size = (200,30))
+        self.choice.Bind(wx.EVT_CHOICE,self.choice_user)
 
 
+        #题目
+        self.titlefont = wx.Font(14, wx.ROMAN,wx.ITALIC,wx.NORMAL)
+        self.tmtext = wx.StaticText(self.panel,-1,u'题目：',pos = (100,150),size = (30,30),style = wx.ALIGN_CENTER_HORIZONTAL)
+        self.tmtext.SetFont(self.titlefont)
+
+        #问题
+        self.questiontext = wx.StaticText(self.panel,-1,pos = (150,150),size =(100,40),\
+                                          style = wx.TE_MULTILINE)
+
+        #选项
+        #self.answerbox = wx.ListBox(self.panel,-1,pos = (180,200),size = (200,160),style = wx.TE_MULTILINE)
+
+
+
+
+
+
+
+
+        #begin button
+        self.button = wx.Button(self.panel,-1,u'开始',pos = (200,400),size = (100,30))
+        self.button.Bind(wx.EVT_BUTTON,self.button_do)
+
+        #回答错误，答案提示
+        self.realtext = wx.StaticText(self.panel,-1,u'A ',pos = (350,400),size = (80,30),style = wx.ALIGN_LEFT)
+
+
+
+    def button_do(self,event):
+        self.button.SetLabel('下一题')
+        paper = chosenpaper.testpaper()
+        maxnum = paper.getnum('选择题')
+        chicenum = random.sample(range(1, maxnum), 25)
+        for num in chicenum:
+            question = paper.getquestion('选择题',num)
+            answer = paper.getpaperitem('选择题',num)
+            realanswer = paper.getanswer('选择题',num)
+            self.questiontext.SetLabel(question)
+            print(answer)
+            self.rabox = wx.RadioBox(self.panel, -1, u'选项', choices=answer, majorDimension=4, pos=(180, 200), \
+                                     size=(200, 40), style=wx.RA_SPECIFY_ROWS)
+            self.rabox.Refresh()
+            break
+
+
+    def choice_user(self,event):
+        x = self.choice.GetStringSelection()
+        if x == '考试模式':
+            self.locationtext.SetValue('test')
 
 app = wx.App()
 frame = MyInFrame()
